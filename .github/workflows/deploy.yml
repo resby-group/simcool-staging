@@ -1,0 +1,38 @@
+name: Deploy to Staging Droplet
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Copy SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SIMCOOL_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+
+    - name: Add droplet to known hosts
+      run: |
+        ssh-keyscan -H 165.232.150.217 >> ~/.ssh/known_hosts
+
+    - name: Deploy to droplet
+      run: |
+        ssh root@165.232.150.217 "
+          cd /var/www/simcool &&
+          git pull &&
+          composer install --no-dev &&
+          php artisan migrate --force &&
+          cd frontend &&
+          npm install &&
+          npm run build &&
+          pm2 restart next-app &&
+          systemctl restart php8.4-fpm
+        "
