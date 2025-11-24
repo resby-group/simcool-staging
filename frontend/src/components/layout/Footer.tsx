@@ -150,7 +150,7 @@ const Footer = () => {
                             </li>
                             <li>
                                 <Link href='/about-us' className='hover:text-primary text-gray-600 hover:underline'>
-                                    {t('home.footer.aboutUs2')}
+                                    {t('home.footer.aboutUs')}
                                 </Link>
                             </li>
                             <li>
