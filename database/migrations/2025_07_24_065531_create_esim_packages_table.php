@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('esim_packages', function (Blueprint $table) {
             $table->id();
-            $table->json('country_ids')->default(0);
+            $table->json('country_ids')->nullable();
             $table->string('region_id')->default(0);
             $table->string('package_id')->unique();
             $table->string('name')->nullable();
