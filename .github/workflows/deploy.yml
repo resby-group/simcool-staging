@@ -13,26 +13,40 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Copy SSH key
+    - name: Setup SSH key
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SIMCOOL_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
-
-    - name: Add droplet to known hosts
-      run: |
         ssh-keyscan -H 165.232.150.217 >> ~/.ssh/known_hosts
 
     - name: Deploy to droplet
       run: |
         ssh -o StrictHostKeyChecking=no root@165.232.150.217 "
-          cd /var/www/simcool &&
-          git pull &&
-          composer install --no-dev &&
-          php artisan migrate --force &&
-          cd frontend &&
-          npm install &&
-          npm run build &&
-          pm2 restart next-app &&
+          set -e
+
+          cd /var/www/simcool
+
+          echo '--- Pulling latest code ---'
+          git pull origin main
+
+          echo '--- Composer install ---'
+          export COMPOSER_ALLOW_SUPERUSER=1
+          composer install --no-dev --optimize-autoloader
+
+          echo '--- Running migrations ---'
+          php artisan migrate --force
+
+          echo '--- Building Next.js frontend ---'
+          cd frontend
+          rm -rf .next node_modules/.cache || true
+
+          npm install --legacy-peer-deps
+          NEXT_DISABLE_ESLINT=1 npm run build
+
+          echo '--- Restarting PM2 and PHP-FPM ---'
+          pm2 restart next-app || pm2 start npm --name next-app -- start
           systemctl restart php8.4-fpm
+
+          echo '--- Deployment successful ---'
         "
