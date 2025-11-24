@@ -28,7 +28,14 @@ require __DIR__ . '/auth.php';
 Route::get('/api/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
+Route::get('/test-mail', function() {
+    \Mail::raw('This is a Brevo test email!', function($message){
+        $message->to('your@email.com')
+                ->subject('Brevo Test');
+    });
 
+    return 'Sent!';
+});
 Route::get('/admin/login', [LoginController::class, 'login'])->name('admin.login');
 Route::get('/admin',function () {
 	   return redirect()->route('admin.login');
