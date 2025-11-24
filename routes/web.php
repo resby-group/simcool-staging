@@ -22,6 +22,8 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\InstallerController;
 use App\Http\Controllers\MasterController as ControllersMasterController;
+use App\Mail\TestBrevoMail;
+use Illuminate\Support\Facades\Mail;
 
 require __DIR__ . '/auth.php';
 
@@ -30,7 +32,7 @@ Route::get('/api/csrf-token', function () {
 });
 Route::get('/test-mail', function() {
     \Mail::raw('This is a Brevo test email!', function($message){
-        $message->to('your@email.com')
+        $message->to('jado2here@gmail.com')
                 ->subject('Brevo Test');
     });
 
