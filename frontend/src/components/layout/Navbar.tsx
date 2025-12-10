@@ -122,11 +122,12 @@ const Navbar = () => {
                         { name: 'home.nav.allPackages', href: '/all-packages' },
                         { name: 'home.nav.allCountryPlan', href: '/country-plan' }
                     ]
-                },
-                {
-                    label: 'home.nav.supportedDevices', // t('nav.supportedDevices')
-                    href: '/esim-supported-devices'
                 }
+                
+                // {
+                //     label: 'home.nav.supportedDevices', // t('nav.supportedDevices')
+                //     href: '/esim-supported-devices'
+                // }
             ]
         }
     };
