@@ -138,7 +138,7 @@ const Footer = () => {
                         <ul className='space-y-3'>
                             <li>
                                 <Link href='/what-is-esim' className='hover:text-primary text-gray-600 hover:underline'>
-                                    {t('home.footer.whatIsEsim')}
+                                    {t('home.footer.whatIsEsim2')}
                                 </Link>
                             </li>
                             <li>
