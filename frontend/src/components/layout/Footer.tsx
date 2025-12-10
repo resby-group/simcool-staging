@@ -46,13 +46,13 @@ const Footer = () => {
                     <div className='mb-8 lg:mb-0'>
                         <div className='flex-shrink-0'>
                             <Link href='/'>
-                                <Image
+                                {/* <Image
                                     src={`${BASE_URL}/${logo}` || '/images/simtel-main.png'}
                                     alt='Company Logo'
                                     height={60}
                                     width={140}
                                     className='h-6 w-auto transition-all duration-300 sm:h-8'
-                                />
+                                /> */}
                             </Link>
                         </div>
                     </div>
